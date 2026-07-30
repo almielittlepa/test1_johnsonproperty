@@ -163,9 +163,9 @@
     // 3. Draft custom WhatsApp message including the referral source
     var message = "";
     if (intent === 'Sell/Lease My Property') {
-      message = "Hi Johnson! I've come through your profile from " + source + "). I would like to consult with you on selling/leasing my property.";
+      message = "Hi Johnson! I've come through your profile from " + source + ". I would like to consult with you on selling/leasing my property.";
     } else {
-      message = "Hi Johnson! I've come through your profile from " + source + "). I am looking to buy/rent a property and would like your assistance.";
+      message = "Hi Johnson! I've come through your profile from " + source + ". I am looking to buy/rent a property and would like your assistance.";
     }
 
     var waUrl = "https://wa.me/" + AGENT_PHONE_NUMBER + "?text=" + encodeURIComponent(message);
