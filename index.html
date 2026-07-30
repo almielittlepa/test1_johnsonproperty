@@ -142,35 +142,40 @@
   <!-- JAVASCRIPT: EVENT TRACKING & ROUTING       -->
   <!-- ========================================== -->
   <script>
-    var AGENT_PHONE_NUMBER = "60126489381";
+  var AGENT_PHONE_NUMBER = "60126489381";
 
-    function handleWhatsAppClick(event, intent) {
-      event.preventDefault();
+  function handleWhatsAppClick(event, intent) {
+    event.preventDefault();
 
-      // 1. Fire Meta Pixel Lead event with specific intent label
-      if (typeof fbq !== 'undefined') {
-        fbq('track', 'Lead', {
-          content_name: intent,
-          action_type: 'WhatsApp CTA Click'
-        });
-      }
+    // 1. Detect if visitor came from Instagram or Facebook via URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var source = urlParams.get('utm_source') || 'Direct Landing Page';
 
-      // 2. Draft custom WhatsApp message based on button clicked
-      var message = "";
-      if (intent === 'Sell/Lease My Property') {
-        message = "Hi Johnson, I would like to consult with you on selling or leasing my property.";
-      } else {
-        message = "Hi Johnson, I am looking to buy or rent a property and would like your assistance.";
-      }
-
-      var waUrl = "https://wa.me/" + AGENT_PHONE_NUMBER + "?text=" + encodeURIComponent(message);
-
-      // 3. Redirect to WhatsApp
-      setTimeout(function() {
-        window.location.href = waUrl;
-      }, 250);
+    // 2. Fire Meta Pixel Lead event with specific intent and source
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'Lead', {
+        content_name: intent,
+        traffic_source: source,
+        action_type: 'WhatsApp CTA Click'
+      });
     }
-  </script>
+
+    // 3. Draft custom WhatsApp message including the referral source
+    var message = "";
+    if (intent === 'Sell/Lease My Property') {
+      message = "Hi Johnson! I've come through your profile from " + source + "). I would like to consult with you on selling/leasing my property.";
+    } else {
+      message = "Hi Johnson! I've come through your profile from " + source + "). I am looking to buy/rent a property and would like your assistance.";
+    }
+
+    var waUrl = "https://wa.me/" + AGENT_PHONE_NUMBER + "?text=" + encodeURIComponent(message);
+
+    // 4. Redirect to WhatsApp
+    setTimeout(function() {
+      window.location.href = waUrl;
+    }, 250);
+  }
+</script>
 
 </body>
 </html>
